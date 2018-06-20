@@ -1,5 +1,3 @@
-#import gene_types
-
 gene_types = {
     'a': ['A', 'a'],
     'c': ['C', 'ch', 'chm'],
@@ -30,6 +28,7 @@ class Gene:
         self.name = name
         self.type = type.lower()
         self.one, self.two = self.name.split('.')
+        self.letter_position_correction()
 
     def letter_position_correction(self):
         if self.two == gene_types[self.type][0]:
@@ -63,3 +62,5 @@ class Gene:
         for g in genotypes:
             if g not in combinations:
                 combinations[g] = probability(genotypes, g)
+
+		return combinations
