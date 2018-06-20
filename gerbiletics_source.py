@@ -3,7 +3,7 @@
 gene_types = {
     'a': ['A', 'a'],
     'c': ['C', 'ch', 'chm'],
-	'd': ['D', 'd']
+	'd': ['D', 'd'],
     'e': ['E', 'e', 'ef'],
     'g': ['G', 'g'],
     'p': ['P', 'p']
@@ -28,7 +28,7 @@ def probability(struct, item):
 class Gene:
     def __init__(self, name, type):
         self.name = name
-        self.type = type
+        self.type = type.lower()
         self.one, self.two = self.name.split('.')
 
     def letter_position_correction(self):
