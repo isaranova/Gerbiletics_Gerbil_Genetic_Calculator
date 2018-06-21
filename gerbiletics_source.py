@@ -37,6 +37,8 @@ class Gene:
         if self.type == ('e' or 'c'):
             if self.two == gene_types[self.type][2] and self.one == gene_types[self.type][1]:
                 self.one, self.two = swap_string(self.one, self.two)
+                
+        self.name = self.one + '.' + self.two
 
     def gene_combinations(self, gen2):
         combinations = dict()
@@ -54,13 +56,13 @@ class Gene:
                         g.name.replace('-', letter)
                         g.letter_position_correction()
                         gen.append(g)
-
-                gen = Gene(gen1+'.'+gen2, self.type)
+			
+                gen = Gene(str(gen1+'.'+gen2), self.type)
                 gen.letter_position_correction()
                 genotypes.append(gen)
 
         for g in genotypes:
             if g not in combinations:
                 combinations[g] = probability(genotypes, g)
-
-		return combinations
+                
+        return combinations
