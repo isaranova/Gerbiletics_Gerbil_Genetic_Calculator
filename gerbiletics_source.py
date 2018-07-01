@@ -1,28 +1,18 @@
-gene_types = {
-    'a': ['A', 'a'],
-    'c': ['C', 'ch', 'chm'],
-	'd': ['D', 'd'],
-    'e': ['E', 'e', 'ef'],
-    'g': ['G', 'g'],
-    'p': ['P', 'p']
-}
-
-gene_possibilities = {
-    'a': ['A.A', 'A.a', 'a.a'],
-    'c': ['C.C', 'C.ch', 'C.chm', 'ch.ch', 'chm.ch', 'chm.chm'],
-    'd': ['D.D', 'D.d', 'd.d'],
-    'e': ['E.E', 'E.e', 'E.ef', 'e.e', 'e.ef', 'ef.ef'],
-    'g': ['G.G', 'G.g', 'g.g'],
-    'p': ['P.P', 'P.p', 'p.p'],
-}
+from support_file import genotype_phenotype, gene_order, gene_possibilities, gene_types
+import itertools
 
 def swap_string(string1, string2):
+    """Function gets two string parameters and swaps their content, returning
+    swapped contents as two variables"""
     temp = string1
     string1 = string2
     string2 = temp
     return string1, string2
 
 def probability(struct, item):
+    """Function counts probability by the count of item present in the struct,
+    parameters are structure with items and item form the structure, returns probability
+    of item in the structure in percents"""
     number = len(struct)
     i_number = struct.count(item)
 
@@ -33,6 +23,9 @@ def probability(struct, item):
     return probability
 
 def letter_possibilities(type, gene):
+    """Function finds all alleles that complete the missing allele in gene with '-',
+    parameters are the type of gene and gene itself, returns list of all possible
+    letters"""
     gen1, gen2 = gene.split('.')
 
     if gen1 == '-' and gen2 == '-':
@@ -49,8 +42,47 @@ def letter_possibilities(type, gene):
     else:
         return [gen1, gen2]
 
+def genotype_probability(genotype, complete_gene_combo):
+    """Function counts probability of complete genotype by multiplying the gene probabilities and then
+    dividing them by appropriate power of 100, parameters are the genotype and complete gene probabilities for all
+    offsprings of the original parents, returns probability of the genotype"""
+    probability = 1
+    for i in range(len(complete_gene_combo)):
+          probability *= complete_gene_combo[i][genotype[i]]
+
+    return probability / (100**5)
+
+def only_phenotypes(list_complete):
+    """Function creating dictionary of phenotypes and their probabilities, which are obtained from the complete
+    genotype - phenotype - probability list and basically sums the probabilities of each phenotype, parameter is
+    the complete list of genotype - phenotype - probability combinations, returns dictionary with phenotype as key
+    and its probability as value"""
+    only_phenotypes = dict()
+
+    for i in range(len(list_complete)):
+        color = str(list_complete[i][1])
+        if color not in only_phenotypes:
+            only_phenotypes[color] = list_complete[i][2]
+        else:
+            new_value = only_phenotypes[color] + list_complete[i][2]
+            only_phenotypes[color] = new_value
+
+    return only_phenotypes
+
+def print_only_phenotypes(list_complete):
+    """Function simply prints the only phenotypes dictionary sorted by its value in descending order, parameter is
+    the complete list of genotype - phenotype - probability combinations"""
+    dict_only_phenotypes = only_phenotypes(list_complete)
+    for p in sorted(dict_only_phenotypes, key=dict_only_phenotypes.get, reverse=True):
+        print(p, str(dict_only_phenotypes[p]) + ' %')
+
 class Gene:
+    """Class designed for working with gene which consists of dominant or recessive alleles"""
     def __init__(self, name, type):
+        """Function initializing the gene structure for easy manipulation in code, setting atributes
+        name from first parameter of the function, type from second parameter that is also automatically
+        changed to lower alphabetical character, one the first allele, two the second allele and then correcting
+        the alleles position accoring to rules of domination in genes"""
         self.name = name
         self.type = type.lower()
         self.one, self.two = self.name.split('.')
@@ -84,6 +116,71 @@ class Gene:
 
         return combinations
 
+class Genotype:
+    def __init__(self, name):
+        self.name = name
+        a_gene, c_gene, d_gene, e_gene, g_gene, p_gene = self.name.split(',')
+        self.genes = [Gene(a_gene, gene_order[0]),
+                      Gene(c_gene, gene_order[1]),
+                      Gene(d_gene, gene_order[2]),
+                      Gene(e_gene, gene_order[3]),
+                      Gene(g_gene, gene_order[4]),
+                      Gene(p_gene, gene_order[5])
+        ]
+
+    def genotype_to_phenotype(self):
+        phenotypes = list()
+
+        for p, g in genotype_phenotype.items():
+            g = Genotype(g)
+            for i in range(len(self.genes)):
+                if g.genes[i].name.replace('-', '') not in self.genes[i].name.replace('-',''):
+                    break
+                else:
+                    if i == len(self.genes) - 1:
+                        phenotypes.append(p)
+
+        if phenotypes == []:
+            phenotypes.append('Unknown')
+
+        return phenotypes
+
+    def gene_combinations_complete(self, other):
+        complete_gene_combo = list()
+        for i in range(len(self.genes)):
+            combo = self.genes[i].gene_combinations(other.genes[i])
+            complete_gene_combo.append(combo)
+
+        return complete_gene_combo
+
+
+    def genotype_combination(self, other):
+        complete_gene_combo = self.gene_combinations_complete(other)
+        genotypes = list()
+
+        for i in range(len(complete_gene_combo)):
+            gene_combo = list(complete_gene_combo[i].keys())
+            genotypes.append(gene_combo)
+
+        genotype_combinations = list(itertools.product(*genotypes))
+
+        genotype_phenotype_probability = list()
+        for g in genotype_combinations:
+            item = list()
+            gg = Genotype(','.join(g))
+            item.extend([g, gg.genotype_to_phenotype(), genotype_probability(g, complete_gene_combo)])
+            genotype_phenotype_probability.append(item)
+
+        return genotype_phenotype_probability
+
+class Offspring:
+    def __init__(self, list_item_offspring):
+        self.genotype = ' '.join(list(list_item_offspring[0])).replace('.', '')
+        self.phenotype = ', '.join(list_item_offspring[1])
+        self.probability = str(list_item_offspring[2]) + ' %'
+        self.complete = self.genotype + '\t' + self.phenotype + '\t' + self.probability
+
+
 gene = Gene('a.A', 'A')
 gen2 = Gene('a.a', 'a')
 funky = Gene('A.-', 'a')
@@ -93,3 +190,13 @@ combo = gene.gene_combinations(gen2)
 combo2 = gene.gene_combinations(funky)
 combo3 = c.gene_combinations(c2)
 print(combo, combo2, combo3)
+
+mama = Genotype('A.A,C.C,D.D,e.e,G.g,P.p')
+papa = Genotype('a.a,C.C,D.d,E.e,G.g,P.p')
+offspring = mama.genotype_combination(papa)
+
+for i in range(len(offspring)):
+    babe = Offspring(offspring[i])
+    print(babe.complete)
+
+print_only_phenotypes(offspring)
