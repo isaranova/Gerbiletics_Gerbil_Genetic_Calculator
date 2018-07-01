@@ -74,7 +74,7 @@ def print_only_phenotypes(list_complete):
     the complete list of genotype - phenotype - probability combinations"""
     dict_only_phenotypes = only_phenotypes(list_complete)
     for p in sorted(dict_only_phenotypes, key=dict_only_phenotypes.get, reverse=True):
-        print(p, str(dict_only_phenotypes[p]) + ' %')
+        print(p.replace('[', '').replace("'", '').replace(']',''), str(dict_only_phenotypes[p]) + ' %')
 
 class Gene:
     """Class designed for working with gene which consists of dominant or recessive alleles"""
@@ -203,24 +203,3 @@ class Offspring:
         self.phenotype = ', '.join(list_item_offspring[1])
         self.probability = str(list_item_offspring[2]) + ' %'
         self.complete = self.genotype + '\t' + self.phenotype + '\t' + self.probability
-
-
-gene = Gene('a.A', 'A')
-gen2 = Gene('a.a', 'a')
-funky = Gene('A.-', 'a')
-c = Gene('C.ch', 'c')
-c2 = Gene('ch.chm', 'c')
-combo = gene.gene_combinations(gen2)
-combo2 = gene.gene_combinations(funky)
-combo3 = c.gene_combinations(c2)
-print(combo, combo2, combo3)
-
-mama = Genotype('A.A,C.C,D.D,e.e,G.g,P.p')
-papa = Genotype('a.a,C.C,D.d,E.e,G.g,P.p')
-offspring = mama.genotype_combination(papa)
-
-for i in range(len(offspring)):
-    babe = Offspring(offspring[i])
-    print(babe.complete)
-
-print_only_phenotypes(offspring)
