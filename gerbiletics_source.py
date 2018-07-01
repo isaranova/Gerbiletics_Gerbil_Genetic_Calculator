@@ -79,16 +79,18 @@ def print_only_phenotypes(list_complete):
 class Gene:
     """Class designed for working with gene which consists of dominant or recessive alleles"""
     def __init__(self, name, type):
-        """Function initializing the gene structure for easy manipulation in code, setting atributes
+        """Function initializing the gene structure for easy manipulation in code, setting attributes
         name from first parameter of the function, type from second parameter that is also automatically
         changed to lower alphabetical character, one the first allele, two the second allele and then correcting
-        the alleles position accoring to rules of domination in genes"""
+        the alleles position according to rules of domination in genes"""
         self.name = name
         self.type = type.lower()
         self.one, self.two = self.name.split('.')
         self.letter_position_correction()
 
     def letter_position_correction(self):
+        """Function that corrects the position of alleles according to the rules of domination in genes, if there is
+        need to change the position gene attributes one and two are swapped and attribute name is generated again"""
         if self.two == gene_types[self.type][0]:
             self.one, self.two = swap_string(self.one, self.two)
 
@@ -99,6 +101,9 @@ class Gene:
         self.name = self.one + '.' + self.two
 
     def gene_combinations(self, gen2):
+        """Function that calculates the probabilities of genes that come of crossing two genes, the function works with
+        unknown allele '-' too, parameter is the second gene needed to cross with the self gene, returns dictionary
+        containing genes as keys and their probabilities as their values"""
         combinations = dict()
         genotypes = list()
 
@@ -117,7 +122,12 @@ class Gene:
         return combinations
 
 class Genotype:
+    """Class designed to work with the gerbil genotype consisting of six different gene types for calculating the
+    phenotype or combinations between two genotypes"""
     def __init__(self, name):
+        """Function initializing the genotype by setting its attributes name and genes, name contains the complete
+        genotype with each gene type divided by ',' and each allele divided by '.', genes is a list of Gene class
+        objects that represent each gene type in the genotype"""
         self.name = name
         a_gene, c_gene, d_gene, e_gene, g_gene, p_gene = self.name.split(',')
         self.genes = [Gene(a_gene, gene_order[0]),
@@ -129,6 +139,8 @@ class Genotype:
         ]
 
     def genotype_to_phenotype(self):
+        """Function calculates the phenotype from the genotype by going through the dictionary of phenotypes and their
+        respective genotypes, returns list of possible phenotypes represented by string name of the phenotype"""
         phenotypes = list()
 
         for p, g in genotype_phenotype.items():
@@ -146,6 +158,9 @@ class Genotype:
         return phenotypes
 
     def gene_combinations_complete(self, other):
+        """Function that connects each gene type's combinations between two genotypes to a list of dictionaries,
+        parameter is the other genotype needed to calculate combinations with self genotype, returns the list of
+        dictionaries containing gene combinations for each gene type"""
         complete_gene_combo = list()
         for i in range(len(self.genes)):
             combo = self.genes[i].gene_combinations(other.genes[i])
@@ -155,6 +170,9 @@ class Genotype:
 
 
     def genotype_combination(self, other):
+        """Function calculates all possible genotypes created by crossing two genotypes, their probabilities and
+        respective phenotypes, parameter is the other genotype needed to cross with the self genotype, function returns
+        a list of lists with each containing a genotype, its phenotype and its probability"""
         complete_gene_combo = self.gene_combinations_complete(other)
         genotypes = list()
 
@@ -174,7 +192,13 @@ class Genotype:
         return genotype_phenotype_probability
 
 class Offspring:
+    """Class designed for representing the offspring of two genotypes with its genotype, phenotype and probability
+    of occurrence"""
     def __init__(self, list_item_offspring):
+        """Function initializing the Offspring class object with setting its attributes genotype, phenotype, probability
+        and complete, where genotype contains the genotype without ',' dividing the gene types and '.' dividing the
+        alleles, phenotype contains all phenotype options for the genotype, probability contains the number in percents
+        and complete the output form of genotype, phenotype and probability"""
         self.genotype = ' '.join(list(list_item_offspring[0])).replace('.', '')
         self.phenotype = ', '.join(list_item_offspring[1])
         self.probability = str(list_item_offspring[2]) + ' %'
