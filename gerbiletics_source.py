@@ -146,7 +146,7 @@ class Genotype:
         for p, g in genotype_phenotype.items():
             g = Genotype(g)
             for i in range(len(self.genes)):
-                if g.genes[i].name.replace('-', '') not in self.genes[i].name.replace('-',''):
+                if self.genes[i].name.replace('-', '') not in g.genes[i].name.replace('-',''):
                     break
                 else:
                     if i == len(self.genes) - 1:
