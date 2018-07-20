@@ -38,6 +38,16 @@
       <string>a a</string>
      </property>
     </item>
+    <item>
+     <property name="text">
+      <string>A -</string>
+     </property>
+    </item>
+    <item>
+     <property name="text">
+      <string>- -</string>
+     </property>
+    </item>
    </widget>
    <widget class="QComboBox" name="c_mom">
     <property name="geometry">
@@ -78,6 +88,21 @@
       <string>chm chm</string>
      </property>
     </item>
+    <item>
+     <property name="text">
+      <string>C -</string>
+     </property>
+    </item>
+    <item>
+     <property name="text">
+      <string>chm -</string>
+     </property>
+    </item>
+    <item>
+     <property name="text">
+      <string>- -</string>
+     </property>
+    </item>
    </widget>
    <widget class="QComboBox" name="d_mom">
     <property name="geometry">
@@ -101,6 +126,16 @@
     <item>
      <property name="text">
       <string>d d</string>
+     </property>
+    </item>
+    <item>
+     <property name="text">
+      <string>D -</string>
+     </property>
+    </item>
+    <item>
+     <property name="text">
+      <string>- -</string>
      </property>
     </item>
    </widget>
@@ -143,6 +178,21 @@
       <string>ef ef</string>
      </property>
     </item>
+    <item>
+     <property name="text">
+      <string>E -</string>
+     </property>
+    </item>
+    <item>
+     <property name="text">
+      <string>e -</string>
+     </property>
+    </item>
+    <item>
+     <property name="text">
+      <string>- -</string>
+     </property>
+    </item>
    </widget>
    <widget class="QComboBox" name="g_mom">
     <property name="geometry">
@@ -166,6 +216,16 @@
     <item>
      <property name="text">
       <string>g g</string>
+     </property>
+    </item>
+    <item>
+     <property name="text">
+      <string>G -</string>
+     </property>
+    </item>
+    <item>
+     <property name="text">
+      <string>- -</string>
      </property>
     </item>
    </widget>
@@ -193,6 +253,16 @@
       <string>p p</string>
      </property>
     </item>
+    <item>
+     <property name="text">
+      <string>P -</string>
+     </property>
+    </item>
+    <item>
+     <property name="text">
+      <string>- -</string>
+     </property>
+    </item>
    </widget>
    <widget class="QComboBox" name="p_dad">
     <property name="geometry">
@@ -216,6 +286,16 @@
     <item>
      <property name="text">
       <string>p p</string>
+     </property>
+    </item>
+    <item>
+     <property name="text">
+      <string>P -</string>
+     </property>
+    </item>
+    <item>
+     <property name="text">
+      <string>- -</string>
      </property>
     </item>
    </widget>
@@ -243,6 +323,16 @@
       <string>g g</string>
      </property>
     </item>
+    <item>
+     <property name="text">
+      <string>G -</string>
+     </property>
+    </item>
+    <item>
+     <property name="text">
+      <string>- -</string>
+     </property>
+    </item>
    </widget>
    <widget class="QComboBox" name="d_dad">
     <property name="geometry">
@@ -266,6 +356,16 @@
     <item>
      <property name="text">
       <string>d d</string>
+     </property>
+    </item>
+    <item>
+     <property name="text">
+      <string>D -</string>
+     </property>
+    </item>
+    <item>
+     <property name="text">
+      <string>- -</string>
      </property>
     </item>
    </widget>
@@ -308,6 +408,21 @@
       <string>chm chm</string>
      </property>
     </item>
+    <item>
+     <property name="text">
+      <string>C -</string>
+     </property>
+    </item>
+    <item>
+     <property name="text">
+      <string>chm -</string>
+     </property>
+    </item>
+    <item>
+     <property name="text">
+      <string>- -</string>
+     </property>
+    </item>
    </widget>
    <widget class="QComboBox" name="a_dad">
     <property name="geometry">
@@ -331,6 +446,16 @@
     <item>
      <property name="text">
       <string>a a</string>
+     </property>
+    </item>
+    <item>
+     <property name="text">
+      <string>A -</string>
+     </property>
+    </item>
+    <item>
+     <property name="text">
+      <string>- -</string>
      </property>
     </item>
    </widget>
@@ -371,6 +496,21 @@
     <item>
      <property name="text">
       <string>ef ef</string>
+     </property>
+    </item>
+    <item>
+     <property name="text">
+      <string>E -</string>
+     </property>
+    </item>
+    <item>
+     <property name="text">
+      <string>e -</string>
+     </property>
+    </item>
+    <item>
+     <property name="text">
+      <string>- -</string>
      </property>
     </item>
    </widget>
