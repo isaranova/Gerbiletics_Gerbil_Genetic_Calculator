@@ -27,10 +27,12 @@ class MyApp(QtWidgets.QMainWindow, Ui_MainWindow):
         super(MyApp, self).__init__()
         self.ui = Ui_MainWindow()
         self.ui.setupUi(self)
+
         self.ui.phen_mom.addItems(list(genotype_phenotype.keys()))
         self.ui.phen_dad.addItems(list(genotype_phenotype.keys()))
         self.ui.phen_mom.addItem('Unknown')
         self.ui.phen_dad.addItem('Unknown')
+
         self.ui.a_mom.currentTextChanged.connect(self.show_mom_dad_phenotype)
         self.ui.c_mom.currentTextChanged.connect(self.show_mom_dad_phenotype)
         self.ui.d_mom.currentTextChanged.connect(self.show_mom_dad_phenotype)
@@ -43,8 +45,15 @@ class MyApp(QtWidgets.QMainWindow, Ui_MainWindow):
         self.ui.e_dad.currentTextChanged.connect(self.show_mom_dad_phenotype)
         self.ui.g_dad.currentTextChanged.connect(self.show_mom_dad_phenotype)
         self.ui.p_dad.currentTextChanged.connect(self.show_mom_dad_phenotype)
+
         self.ui.phen_mom.activated.connect(self.show_mom_genotype)
         self.ui.phen_dad.activated.connect(self.show_dad_genotype)
+        self.ui.phen_mom.model().item(self.find_unknown()).setEnabled(False)
+        self.ui.phen_dad.model().item(self.find_unknown()).setEnabled(False)
+
+    def find_unknown(self):
+        index = self.ui.phen_mom.findText('Unknown')
+        return index
 
     def show_mom_dad_phenotype(self):
         mom = Genotype(create_genotype(str(self.ui.a_mom.currentText()),
@@ -88,7 +97,6 @@ class MyApp(QtWidgets.QMainWindow, Ui_MainWindow):
                         self.ui.g_mom, 
                         self.ui.p_mom
         ]
-        
 
         for i in range(6):
             g = genotype_mom.genes[i].name.replace('.', ' ')
